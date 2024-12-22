@@ -13,11 +13,14 @@ interface DonationDAO {
     @Query("SELECT * FROM donationmodel")
     fun getAll(): Flow<List<DonationModel>>
 
+    @Query("SELECT * FROM donationmodel WHERE id=:id")
+    fun get(id: Int): Flow<DonationModel>
+
     @Insert
     suspend fun insert(donation: DonationModel)
 
-    @Update
-    suspend fun update(donation: DonationModel)
+    @Query("UPDATE donationmodel SET message=:message WHERE id = :id")
+    suspend fun update(id: Int, message:String)
 
     @Delete
     suspend fun delete(donation: DonationModel)

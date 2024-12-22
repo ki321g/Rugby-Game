@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ie.setu.rugbygame.data.DonationModel
 import ie.setu.rugbygame.ui.screens.about.AboutScreen
+import ie.setu.rugbygame.ui.screens.details.DetailsScreen
 import ie.setu.rugbygame.ui.screens.donate.DonateScreen
 import ie.setu.rugbygame.ui.screens.reports.ReportScreen
 
@@ -29,6 +30,7 @@ fun NavHostProvider(
             //call our 'Donate' Screen Here
             DonateScreen(modifier = modifier)
         }
+
         composable(route = Report.route) {
             //call our 'Report' Screen Here
             ReportScreen(modifier = modifier,
@@ -38,9 +40,21 @@ fun NavHostProvider(
                 },
             )
         }
+
         composable(route = About.route) {
             //call our 'About' Screen Here
             AboutScreen(modifier = modifier)
+        }
+
+        composable(
+            route = Details.route,
+            arguments = Details.arguments
+        )
+        { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt(Details.idArg)
+            if (id != null) {
+                DetailsScreen()
+            }
         }
     }
 }
