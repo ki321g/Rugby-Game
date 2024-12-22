@@ -15,8 +15,10 @@ import ie.setu.rugbygame.ui.theme.RugbyGameTheme
 
 @Composable
 internal fun DonationCardList(
-    donations: SnapshotStateList<DonationModel>,
-    modifier: Modifier = Modifier
+    donations: List<DonationModel>,
+    modifier: Modifier = Modifier,
+    onDeleteDonation: (DonationModel) -> Unit,
+    onClickDonationDetails: (Int) -> Unit,
 ) {
     LazyColumn {
         items(
@@ -28,6 +30,8 @@ internal fun DonationCardList(
                 paymentAmount = donation.paymentAmount,
                 message = donation.message,
                 dateCreated = DateFormat.getDateTimeInstance().format(donation.dateDonated),
+                onClickDelete = { onDeleteDonation(donation) },
+                onClickDonationDetails = { onClickDonationDetails(donation.id) }
             )
         }
     }
@@ -36,10 +40,13 @@ internal fun DonationCardList(
 @Preview(showBackground = true,
     wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE
 )
-
 @Composable
 fun DonationCardListPreview() {
     RugbyGameTheme {
-        DonationCardList(fakeDonations.toMutableStateList())
+        DonationCardList(
+            fakeDonations.toMutableStateList(),
+            onDeleteDonation = {},
+            onClickDonationDetails = { },
+        )
     }
 }

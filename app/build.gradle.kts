@@ -3,9 +3,13 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
-//    Donte
+    // Donte
     alias(libs.plugins.jetbrainsCompose)
-//    alias(libs.plugins.compose.compiler)
+    //alias(libs.plugins.compose.compiler)
+
+    //V3
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.android.ksp)
 }
 
 android {
@@ -66,4 +70,18 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
+    //V3
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    //ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 }

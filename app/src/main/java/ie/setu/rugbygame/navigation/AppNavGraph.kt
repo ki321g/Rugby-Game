@@ -9,9 +9,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ie.setu.rugbygame.data.DonationModel
-import ie.setu.rugbygame.ui.screens.ScreenAbout
-import ie.setu.rugbygame.ui.screens.ScreenDonate
-import ie.setu.rugbygame.ui.screens.ScreenReport
+import ie.setu.rugbygame.ui.screens.about.AboutScreen
+import ie.setu.rugbygame.ui.screens.donate.DonateScreen
+import ie.setu.rugbygame.ui.screens.reports.ReportScreen
 
 @Composable
 fun NavHostProvider(
@@ -27,15 +27,24 @@ fun NavHostProvider(
 
         composable(route = Donate.route) {
             //call our 'Donate' Screen Here
-            ScreenDonate(modifier = modifier,donations = donations)
+            DonateScreen(modifier = modifier)
         }
         composable(route = Report.route) {
             //call our 'Report' Screen Here
-            ScreenReport(modifier = modifier, donations = donations)
+            ReportScreen(modifier = modifier,
+                onClickDonationDetails = {
+                        donationId : Int ->
+                    navController.navigateToDonationDetails(donationId)
+                },
+            )
         }
         composable(route = About.route) {
             //call our 'About' Screen Here
-            ScreenAbout(modifier = modifier)
+            AboutScreen(modifier = modifier)
         }
     }
+}
+
+private fun NavHostController.navigateToDonationDetails(donationId: Int) {
+    this.navigate("details/$donationId")
 }
