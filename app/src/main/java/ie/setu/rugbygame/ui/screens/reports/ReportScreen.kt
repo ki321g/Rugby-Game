@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
@@ -23,14 +24,24 @@ import ie.setu.rugbygame.data.fakeDonations
 import ie.setu.rugbygame.ui.components.report.DonationCardList
 import ie.setu.rugbygame.ui.components.report.ReportText
 import ie.setu.rugbygame.ui.components.general.Centre
+import ie.setu.rugbygame.ui.components.general.ShowError
+import ie.setu.rugbygame.ui.components.general.ShowLoader
+import ie.setu.rugbygame.ui.components.general.ShowRefreshList
 import ie.setu.rugbygame.ui.theme.RugbyGameTheme
 
 @Composable
 fun ReportScreen(modifier: Modifier = Modifier,
-                 onClickDonationDetails: (Int) -> Unit,
+                 onClickDonationDetails: (String) -> Unit,
                  reportViewModel: ReportViewModel = hiltViewModel()) {
 
     val donations = reportViewModel.uiDonations.collectAsState().value
+    val isError = reportViewModel.isErr.value
+    val error = reportViewModel.error.value
+    val isLoading = reportViewModel.isLoading.value
+
+    LaunchedEffect(Unit) {
+        reportViewModel.getDonations()
+    }
 
     Column {
         Column(
@@ -39,10 +50,14 @@ fun ReportScreen(modifier: Modifier = Modifier,
                 end = 24.dp
             ),
         ) {
+            if(isLoading) ShowLoader("Loading Donations...")
             ReportText()
-            if(donations.isEmpty())
+            if(!isError)
+                ShowRefreshList(onClick = { reportViewModel.getDonations() })
+            if (donations.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
-                    Text(color = MaterialTheme.colorScheme.secondary,
+                    Text(
+                        color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
                         lineHeight = 34.sp,
@@ -50,18 +65,25 @@ fun ReportScreen(modifier: Modifier = Modifier,
                         text = stringResource(R.string.empty_list)
                     )
                 }
-            else
+            if (!isError) {
                 DonationCardList(
                     donations = donations,
                     onClickDonationDetails = onClickDonationDetails,
-                    onDeleteDonation = {
-                            donation: DonationModel ->
+                    onDeleteDonation = { donation: DonationModel ->
                         reportViewModel.deleteDonation(donation)
-                    }
+                    },
+                    onRefreshList = { reportViewModel.getDonations() }
                 )
+            }
+            if (isError) {
+                ShowError(headline = error.message!! + " error...",
+                    subtitle = error.toString(),
+                    onClick = { reportViewModel.getDonations() })
+            }
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun ReportScreenPreview() {
@@ -97,8 +119,9 @@ fun PreviewReportScreen(modifier: Modifier = Modifier,
             else
                 DonationCardList(
                     donations = donations,
-                    onDeleteDonation = {},
-                    onClickDonationDetails = { }
+                    onDeleteDonation = { },
+                    onClickDonationDetails = { },
+                    onRefreshList = { }
                 )
         }
     }

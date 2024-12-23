@@ -35,7 +35,7 @@ fun NavHostProvider(
             //call our 'Report' Screen Here
             ReportScreen(modifier = modifier,
                 onClickDonationDetails = {
-                        donationId : Int ->
+                        donationId : String ->
                     navController.navigateToDonationDetails(donationId)
                 },
             )
@@ -51,14 +51,15 @@ fun NavHostProvider(
             arguments = Details.arguments
         )
         { navBackStackEntry ->
-            val id = navBackStackEntry.arguments?.getInt(Details.idArg)
+            val id = navBackStackEntry.arguments?.getString(Details.idArg)
             if (id != null) {
                 DetailsScreen()
             }
         }
+
     }
 }
 
-private fun NavHostController.navigateToDonationDetails(donationId: Int) {
+private fun NavHostController.navigateToDonationDetails(donationId: String) {
     this.navigate("details/$donationId")
 }

@@ -53,8 +53,10 @@ fun DonationCard(
     paymentAmount: Int,
     message: String,
     dateCreated: String,
+    dateModified: String,
     onClickDelete: () -> Unit,
     onClickDonationDetails: () -> Unit,
+    onRefreshList: () -> Unit,
 ) {
     Card(
         border = BorderStroke(1.dp, Color.Black),
@@ -67,8 +69,10 @@ fun DonationCard(
             paymentAmount,
             message,
             dateCreated,
+            dateModified,
             onClickDelete,
-            onClickDonationDetails)
+            onClickDonationDetails,
+            onRefreshList)
     }
 }
 
@@ -78,8 +82,10 @@ private fun DonationCardContent(
     paymentAmount: Int,
     message: String,
     dateCreated: String,
+    dateModified: String,
     onClickDelete: () -> Unit,
-    onClickDonationDetails: () -> Unit
+    onClickDonationDetails: () -> Unit,
+    onRefreshList: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
@@ -93,12 +99,14 @@ private fun DonationCardContent(
                     stiffness = Spring.StiffnessLow
                 )
             )
-            .background(brush = Brush.horizontalGradient(
-                colors = listOf(
-                    startGradientColor,
-                    endGradientColor,
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        startGradientColor,
+                        endGradientColor,
+                    )
                 )
-            ))
+            )
     ) {
         Column(
             modifier = Modifier
@@ -128,6 +136,9 @@ private fun DonationCardContent(
             Text(
                 text = "Donated $dateCreated", style = MaterialTheme.typography.labelSmall
             )
+            Text(
+                text = "Modified $dateModified", style = MaterialTheme.typography.labelSmall
+            )
             if (expanded) {
                 Text(modifier = Modifier.padding(vertical = 16.dp), text = message)
                 Row(modifier = Modifier.fillMaxWidth(),
@@ -145,7 +156,8 @@ private fun DonationCardContent(
                     if (showDeleteConfirmDialog) {
                         showDeleteAlert(
                             onDismiss = { showDeleteConfirmDialog = false },
-                            onDelete = onClickDelete
+                            onDelete = onClickDelete,
+                            onRefresh = onRefreshList
                         )
                     }
                 }
@@ -168,14 +180,19 @@ private fun DonationCardContent(
 @Composable
 fun showDeleteAlert(
     onDismiss: () -> Unit,
-    onDelete: () -> Unit) {
+    onDelete: () -> Unit,
+    onRefresh: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onDismiss ,
         title = { Text(stringResource(id = R.string.confirm_delete)) },
         text = { Text(stringResource(id = R.string.confirm_delete_message)) },
         confirmButton = {
             Button(
-                onClick = { onDelete() }
+                onClick = {
+                    onDelete()
+                    onRefresh()
+                }
             ) { Text("Yes") }
         },
         dismissButton = {
@@ -183,6 +200,7 @@ fun showDeleteAlert(
         }
     )
 }
+
 
 
 @Preview
@@ -197,8 +215,10 @@ fun DonationCardPreview() {
                 by the user..."
             """.trimIndent(),
             dateCreated = DateFormat.getDateTimeInstance().format(Date()),
+            dateModified = DateFormat.getDateTimeInstance().format(Date()),
             onClickDelete = { },
-            onClickDonationDetails = {}
+            onClickDonationDetails = {},
+            onRefreshList = {  }
         )
     }
 }
