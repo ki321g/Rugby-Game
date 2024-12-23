@@ -28,6 +28,12 @@ ksp = "2.0.0-1.0.21"
 #V4
 retrofit = "2.11.0"
 
+#V5
+googleGmsGoogleServices = "4.4.2"
+playServicesAuth = "21.2.0"
+firebaseAuthKtx = "23.1.0"
+firebaseAuth = "23.1.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -67,6 +73,12 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+#Google Services
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+
+#Firebase
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -80,3 +92,6 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 #V3
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 kotlin-android-ksp = { id = "com.google.devtools.ksp", version.ref ="ksp" }
+
+#V5
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }

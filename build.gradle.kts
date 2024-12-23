@@ -4,11 +4,14 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
 
-//    Donate
-//    alias(libs.plugins.compose.compiler) apply false
+    //Donate
+    //alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.jetbrainsCompose) apply false
 
-//    V3
+    //V3
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.android.ksp) apply false
+
+    //V5
+    alias(libs.plugins.google.gms.google.services) apply false
 }

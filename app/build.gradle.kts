@@ -10,6 +10,9 @@ plugins {
     //V3
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android.ksp)
+
+    //V5
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -57,6 +60,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -89,4 +93,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.gson)
+
+    //V5
+    //Google Services
+    implementation(libs.play.services.auth)
+
+    //Firebase
+    implementation(libs.firebase.auth.ktx)
 }
